@@ -22,6 +22,10 @@ dependencies {
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:31.1-jre'
+    implementation 'io.github.cdimascio:dotenv-java:3.0.0'
+    implementation("net.dv8tion:JDA:5.0.0-beta.9") {
+        exclude module: 'opus-java'
+    }
 }
 
 application {
