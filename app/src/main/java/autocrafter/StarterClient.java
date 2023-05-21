@@ -3,6 +3,7 @@ package autocrafter;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import autocrafter.commands.StartServer;
 
 public class StarterClient {
     
@@ -14,7 +15,7 @@ public class StarterClient {
 
         JDA jda = JDABuilder.createDefault(token).build();
 
-        
+        new StartServer(jda);
     }
 
 }
