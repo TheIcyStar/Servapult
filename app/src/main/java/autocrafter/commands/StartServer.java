@@ -1,6 +1,6 @@
 package autocrafter.commands;
 
-import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -9,23 +9,25 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class StartServer extends ListenerAdapter {
 
-    public static final String COMMAND_NAME = "startServer";
+    public static final String COMMAND_NAME = "start-server";
 
-    public StartServer(JDA jda) {
+    public StartServer(Guild guild) {
         OptionData serverList = new OptionData(OptionType.STRING, "server", "Which server to set up");
 
         serverList.addChoice("latest", "minecraft-1.19.4");
         serverList.addChoice("astral", "create-astral");
 
-        jda.updateCommands().addCommands(
+        guild.updateCommands().addCommands(
             Commands.slash(COMMAND_NAME, "Starts a specified server")
                 .addOptions(serverList)
         );
+
+        guild.getJDA().addEventListener(this);
     }
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        if (event.getName().equals("startServer")) {
+        if (event.getName().equals(COMMAND_NAME)) {
             event.reply("Starting server!");
         }
     }
