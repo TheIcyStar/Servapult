@@ -50,6 +50,7 @@ public class StarterClient {
         ArrayList<SlashCommandData> slashCommands = new ArrayList<SlashCommandData>();
         slashCommands.add(new HelloWorld(guild).getCommandData());
         slashCommands.add(new StartServer(guild).getCommandData());
+        slashCommands.add(new StopServer(guild).getCommandData());
 
         guild.updateCommands().addCommands(slashCommands).queue();
         // Hello, World!
