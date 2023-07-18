@@ -1,23 +1,24 @@
 package autocrafter.commands;
 
-import java.io.IOException;
+import javax.annotation.Nonnull;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
+
+import autocrafter.HosterClient;
 
 public class StartServer extends ListenerAdapter {
 
     public static final String COMMAND_NAME = "start-server";
     private SlashCommandData commandData;
 
-    private ProcessBuilder serverProcessBuilder;
-    
-    private static Process serverProcess;
+    private static HosterClient client;
 
     public StartServer(Guild guild) {
         OptionData serverList = new OptionData(OptionType.STRING, "server", "Which server to set up");
@@ -32,19 +33,20 @@ public class StartServer extends ListenerAdapter {
     }
 
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+    public void onSlashCommandInteraction(@Nonnull SlashCommandInteractionEvent event) {
         if (event.getName().equals(COMMAND_NAME)) {
-            String serverName = event.getOption("server").getAsString();
+            OptionMapping serverOption = event.getOption("server");
+            if (serverOption == null) {
+                System.err.println("Option was null");
+                return;
+            }
+            String serverName = serverOption.getAsString();
 
             event.reply("Starting server: " + serverName).queue();
             
-            serverProcessBuilder = new ProcessBuilder("java", "-jar", "./servers/" + serverName + ".jar");
-
-            try {
-                serverProcess = serverProcessBuilder.start();
-            } catch (IOException e) {
-                event.reply("Failed to start! Error: " + e.getMessage());
-            }
+            String[] javaArgs = {"-Xmx1024M", "-Xms1024M", "-jar"};
+            client = new HosterClient("Q:\\Servers\\DummyMC\\server.jar", javaArgs);
+            client.start();
         }
     }
 
@@ -52,7 +54,7 @@ public class StartServer extends ListenerAdapter {
         return commandData;
     }
 
-    public static Process getServerProcess() {
-        return serverProcess;
+    public static HosterClient getHosterClient() {
+        return client;
     }
 }

@@ -1,5 +1,7 @@
 package autocrafter.commands;
 
+import javax.annotation.Nonnull;
+
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -18,11 +20,9 @@ public class StopServer extends ListenerAdapter {
     }
 
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+    public void onSlashCommandInteraction(@Nonnull SlashCommandInteractionEvent event) {
         if (event.getName().equals(COMMAND_NAME)) {
-            
-            Process serverProcess = StartServer.getServerProcess();
-            serverProcess.destroy();
+            autocrafter.commands.StartServer.getHosterClient().stop();
         }
     }
     

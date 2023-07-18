@@ -1,5 +1,7 @@
 package autocrafter.commands;
 
+import javax.annotation.Nonnull;
+
 import net.dv8tion.jda.api.entities.Guild;
 // import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -19,14 +21,14 @@ public class HelloWorld extends ListenerAdapter {
     }
 
     @Override
-    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+    public void onSlashCommandInteraction(@Nonnull SlashCommandInteractionEvent event) {
         if (event.getName().equals(COMMAND_NAME)) {
             event.reply("Hello, World!").queue();
         }
     }
 
     @Override
-    public void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
         if (event.getMessage().getContentRaw().equals("!helloWorld")) {
             event.getMessage().reply("Hello, World!");
         }
