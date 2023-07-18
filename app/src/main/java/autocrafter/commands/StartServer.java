@@ -1,5 +1,7 @@
 package autocrafter.commands;
 
+import java.io.IOException;
+
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -28,7 +30,18 @@ public class StartServer extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         if (event.getName().equals(COMMAND_NAME)) {
-            event.reply("Starting server!").queue();
+            String serverName = event.getOption("server").getAsString();
+
+            event.reply("Starting server: " + serverName).queue();
+            
+            ProcessBuilder serverProcessBuilder = new ProcessBuilder("java", "-jar", "./servers/" + serverName + ".jar");
+
+            try {
+                Process serverProcess = serverProcessBuilder.start();
+                serverProcess.destroy();
+            } catch (IOException e) {
+                event.reply("Failed to start! Error: " + e.getMessage());
+            }
         }
     }
 
