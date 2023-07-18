@@ -15,6 +15,10 @@ public class StartServer extends ListenerAdapter {
     public static final String COMMAND_NAME = "start-server";
     private SlashCommandData commandData;
 
+    private ProcessBuilder serverProcessBuilder;
+    
+    private static Process serverProcess;
+
     public StartServer(Guild guild) {
         OptionData serverList = new OptionData(OptionType.STRING, "server", "Which server to set up");
 
@@ -34,11 +38,10 @@ public class StartServer extends ListenerAdapter {
 
             event.reply("Starting server: " + serverName).queue();
             
-            ProcessBuilder serverProcessBuilder = new ProcessBuilder("java", "-jar", "./servers/" + serverName + ".jar");
+            serverProcessBuilder = new ProcessBuilder("java", "-jar", "./servers/" + serverName + ".jar");
 
             try {
-                Process serverProcess = serverProcessBuilder.start();
-                serverProcess.destroy();
+                serverProcess = serverProcessBuilder.start();
             } catch (IOException e) {
                 event.reply("Failed to start! Error: " + e.getMessage());
             }
@@ -47,5 +50,9 @@ public class StartServer extends ListenerAdapter {
 
     public SlashCommandData getCommandData() {
         return commandData;
+    }
+
+    public static Process getServerProcess() {
+        return serverProcess;
     }
 }
