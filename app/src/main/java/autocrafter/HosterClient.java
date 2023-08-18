@@ -14,9 +14,9 @@ import autocrafter.ConsoleHandlers.MinecraftHandler;
 
 public class HosterClient {
     public ProcessBuilder processBuilder;
-    private Process process;
-    private String serverPath;
-    private String[] serverArgs;
+    private static Process process;
+    // private String serverPath;
+    // private String[] serverArgs;
 
     //testing
     public static void main(String[] args){
@@ -70,5 +70,14 @@ public class HosterClient {
             System.out.println("Error in process");
             System.out.println(e);
         }
+    }
+
+    public void stop() {
+        process.destroy();
+        processBuilder = null;
+    }
+
+    public static Process getServerProcess() {
+        return process;
     }
 }
