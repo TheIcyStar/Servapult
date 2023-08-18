@@ -23,8 +23,8 @@ public class StartServer extends ListenerAdapter {
     public StartServer(Guild guild) {
         OptionData serverList = new OptionData(OptionType.STRING, "server", "Which server to set up");
 
-        serverList.addChoice("latest", "minecraft-1.19.4");
-        serverList.addChoice("astral", "create-astral");
+        serverList.addChoice("latest", "latest");
+        serverList.addChoice("astral", "astral");
 
         commandData = Commands.slash(COMMAND_NAME, "Starts a specified server")
             .addOptions(serverList);
