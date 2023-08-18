@@ -3,15 +3,38 @@
  */
 package autocrafter;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 public class App {
     public String getGreeting() {
         return "Hello World!";
     }
 
+    private static HosterClient StartHostClient(String[] args) {
+        HosterClient hostClient = new HosterClient("", args);
+        hostClient.start();
+        return hostClient;
+    }
+
+    private static StarterClient StartStarterClient() {
+        StarterClient starterClient = new StarterClient();
+        starterClient.start();
+        return starterClient;
+    }
+
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
 
-        StarterClient botClient = new StarterClient();
-        botClient.start();
+        Dotenv dotenv = Dotenv.load();
+        String serviceType = dotenv.get("SERVICE_TYPE");
+        
+        if (serviceType.equals("BOTH")) {
+            StartStarterClient();
+            StartHostClient(args);
+        } else if (serviceType.equals("HOSTER")) {
+            StartHostClient(args);
+        } else if (serviceType.equals("STARTER")) {
+            StartStarterClient();
+        }
     }
 }
