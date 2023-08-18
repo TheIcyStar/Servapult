@@ -10,8 +10,8 @@ public class App {
         return "Hello World!";
     }
 
-    private static HosterClient StartHostClient(String[] args) {
-        HosterClient hostClient = new HosterClient("", args);
+    private static HosterClient StartHostClient(String slug) {
+        HosterClient hostClient = new HosterClient(slug);
         hostClient.start();
         return hostClient;
     }
@@ -30,9 +30,8 @@ public class App {
         
         if (serviceType.equals("BOTH")) {
             StartStarterClient();
-            StartHostClient(args);
         } else if (serviceType.equals("HOSTER")) {
-            StartHostClient(args);
+            StartHostClient("latest");
         } else if (serviceType.equals("STARTER")) {
             StartStarterClient();
         }
