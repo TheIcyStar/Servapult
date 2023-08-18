@@ -3,14 +3,17 @@ package autocrafter;
 import io.github.cdimascio.dotenv.Dotenv;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.NameNotFoundException;
 
 import com.amihaiemil.eoyaml.Yaml;
 import com.amihaiemil.eoyaml.YamlMapping;
+import com.amihaiemil.eoyaml.YamlNode;
 
 public class ServerConfig {
-    private String cmd;
+    private List<String> cmd;
     private String type;
     private boolean autoShutdown;
     private int graceMinutes;
@@ -25,7 +28,7 @@ public class ServerConfig {
     //         return;
     //     }
 
-    //     System.out.println("cmd: "+serverConfig.command);
+    //     System.out.println("cmd: "+serverConfig.cmd);
     //     System.out.println("type: "+serverConfig.type);
     //     System.out.println("autoShutdown: "+serverConfig.autoShutdown);
     //     System.out.println("graceMinutes: "+serverConfig.graceMinutes);
@@ -53,8 +56,12 @@ public class ServerConfig {
             throw new NameNotFoundException("❌ Failed to find config data for server slug: "+slug);
         }
 
-        //Get the properties for that slug
-        this.cmd = slugConfig.string("cmd");
+
+        //Set properties
+        this.cmd = new ArrayList<String>();
+        for(YamlNode item : slugConfig.yamlSequence("cmd")){
+            cmd.add(item.toString()); //fixme
+        }
         this.type = slugConfig.string("type");
         
         //Get optional restart polocies
@@ -69,7 +76,7 @@ public class ServerConfig {
         }
     }
 
-    public String getCommand() {
+    public List<String> getCommand() {
         return cmd;
     }
 

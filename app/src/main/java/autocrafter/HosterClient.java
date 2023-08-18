@@ -9,13 +9,13 @@ import java.io.File;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
+import javax.naming.NameNotFoundException;
+
 import autocrafter.ConsoleHandlers.MinecraftHandler;
 
 public class HosterClient extends Thread {
     public ProcessBuilder processBuilder;
     private static Process process;
-    // private String serverPath;
-    // private String[] serverArgs;
 
     //testing
     public static void main(String[] args){
@@ -24,10 +24,19 @@ public class HosterClient extends Thread {
     }
 
     public HosterClient(String serverSlug){
-        
+        ServerConfig serverConfig;
 
-        processBuilder = new ProcessBuilder("java", "-jar", "server.jar");
-        processBuilder.directory(new File("Q:\\Servers\\DummyMC"));
+        try {
+            serverConfig = new ServerConfig(serverSlug);
+        } catch (NameNotFoundException e) {
+            System.out.println("❌ Error getting server config");
+            System.out.println(e);
+            //Todo: Handle failed server starts better
+            System.exit(1);
+            return; //to shut up the linter
+        }
+
+        processBuilder = new ProcessBuilder(serverConfig.getCommand());
     }
 
     public void run(){
