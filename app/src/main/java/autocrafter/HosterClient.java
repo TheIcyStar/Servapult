@@ -5,6 +5,7 @@
 package autocrafter;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
@@ -36,6 +37,7 @@ public class HosterClient extends Thread {
         }
 
         processBuilder = new ProcessBuilder(serverConfig.getCommand());
+        processBuilder.directory(new File(serverConfig.getDirectory()));
     }
 
     public void run(){
