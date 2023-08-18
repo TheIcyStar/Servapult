@@ -10,10 +10,10 @@ import javax.naming.NameNotFoundException;
 
 import com.amihaiemil.eoyaml.Yaml;
 import com.amihaiemil.eoyaml.YamlMapping;
-import com.amihaiemil.eoyaml.YamlNode;
 
 public class ServerConfig {
     private List<String> cmd;
+    private String directory;
     private String type;
     private boolean autoShutdown;
     private int graceMinutes;
@@ -59,9 +59,10 @@ public class ServerConfig {
 
         //Set properties
         this.cmd = new ArrayList<String>();
-        for(YamlNode item : slugConfig.yamlSequence("cmd")){
-            cmd.add(item.toString()); //fixme
+        for(int i = 0; i < slugConfig.yamlSequence("cmd").size(); i++){
+            cmd.add(slugConfig.yamlSequence("cmd").string(i)); //fixme
         }
+        this.directory = slugConfig.string("directory");
         this.type = slugConfig.string("type");
         
         //Get optional restart polocies
@@ -78,6 +79,10 @@ public class ServerConfig {
 
     public List<String> getCommand() {
         return cmd;
+    }
+
+    public String getDirectory() {
+        return directory;
     }
 
     public String getType() {
