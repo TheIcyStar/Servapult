@@ -7,7 +7,6 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
-import okhttp3.internal.ws.RealWebSocket.Message;
 
 public class StopServer extends ListenerAdapter {
 
