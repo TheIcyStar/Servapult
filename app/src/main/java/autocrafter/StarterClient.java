@@ -15,7 +15,7 @@ public class StarterClient {
     public void start() {
 
         // Load relevant .env variables
-        Dotenv dotenv = Dotenv.load();
+        Dotenv dotenv = DotenvLoader.getDotenv();
         String token = dotenv.get("DISCORD_BOT_TOKEN");
         // Test token
         if (token == null) {
