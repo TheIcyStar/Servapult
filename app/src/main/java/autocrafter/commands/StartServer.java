@@ -44,8 +44,7 @@ public class StartServer extends ListenerAdapter {
 
             event.reply("Starting server: " + serverName).queue();
             
-            String[] javaArgs = {"-Xmx1024M", "-Xms1024M", "-jar"};
-            client = new HosterClient("Q:\\Servers\\DummyMC\\server.jar", javaArgs);
+            client = new HosterClient(serverName);
             client.start();
         }
     }

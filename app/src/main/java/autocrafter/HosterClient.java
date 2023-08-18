@@ -20,21 +20,14 @@ public class HosterClient {
 
     //testing
     public static void main(String[] args){
-        String[] javaArgs = {"-Xmx1024M", "-Xms1024M", "-jar"};
-        HosterClient client = new HosterClient("Q:\\Servers\\DummyMC\\server.jar", javaArgs);
+        HosterClient client = new HosterClient("latest");
         client.start();
     }
 
-    public HosterClient(String path, String[] args){
-        ArrayList<String> list = new ArrayList<>();
-        list.add("C:\\Program Files\\Java\\jdk-17.0.2\\bin\\javaw.exe");
-        for(String arg : args){
-            list.add(arg);
-        }
-        list.add(path);
-        list.add("nogui");
+    public HosterClient(String serverSlug){
+        
 
-        processBuilder = new ProcessBuilder(list);
+        processBuilder = new ProcessBuilder("");
         processBuilder.directory(new File("Q:\\Servers\\DummyMC"));
     }
 
