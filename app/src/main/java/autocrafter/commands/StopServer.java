@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
+import okhttp3.internal.ws.RealWebSocket.Message;
 
 public class StopServer extends ListenerAdapter {
 
@@ -22,7 +23,11 @@ public class StopServer extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(@Nonnull SlashCommandInteractionEvent event) {
         if (event.getName().equals(COMMAND_NAME)) {
-            autocrafter.commands.StartServer.getHosterClient().stop();
+            event.reply("Stopping server").queue();
+
+            autocrafter.commands.StartServer.getHosterClient().halt();
+
+            event.reply("Server stopped!");
         }
     }
     
