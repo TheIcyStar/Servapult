@@ -10,7 +10,7 @@ import com.amihaiemil.eoyaml.Yaml;
 import com.amihaiemil.eoyaml.YamlMapping;
 
 public class ServerConfig {
-    private String command;
+    private String cmd;
     private String type;
     private boolean autoShutdown;
     private int graceMinutes;
@@ -54,8 +54,8 @@ public class ServerConfig {
         }
 
         //Get the properties for that slug
-        this.command = slugConfig.string("cmd");
-        this.command = slugConfig.string("type");
+        this.cmd = slugConfig.string("cmd");
+        this.type = slugConfig.string("type");
         
         //Get optional restart polocies
         try {
@@ -70,7 +70,7 @@ public class ServerConfig {
     }
 
     public String getCommand() {
-        return command;
+        return cmd;
     }
 
     public String getType() {
