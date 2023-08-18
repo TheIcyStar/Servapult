@@ -10,8 +10,14 @@ import java.util.ArrayList;
 
 import autocrafter.commands.*;
 
+/**
+ * Runs the Discord bot which allows for users to start and stop game servers
+ */
 public class StarterClient {
     
+    /**
+     * Starts the bot
+     */
     public void start() {
 
         // Load relevant .env variables
