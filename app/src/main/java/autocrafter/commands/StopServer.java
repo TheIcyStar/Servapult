@@ -26,7 +26,7 @@ public class StopServer extends ListenerAdapter {
 
             autocrafter.commands.StartServer.getHosterClient().halt();
 
-            event.reply("Server stopped!");
+            event.getHook().sendMessage("Server stopped!").queue();
         }
     }
     
