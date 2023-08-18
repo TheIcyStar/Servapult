@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import autocrafter.ConsoleHandlers.MinecraftHandler;
 
-public class HosterClient {
+public class HosterClient extends Thread {
     public ProcessBuilder processBuilder;
     private static Process process;
     // private String serverPath;
@@ -26,11 +26,11 @@ public class HosterClient {
     public HosterClient(String serverSlug){
         
 
-        processBuilder = new ProcessBuilder("");
+        processBuilder = new ProcessBuilder("java", "-jar", "server.jar");
         processBuilder.directory(new File("Q:\\Servers\\DummyMC"));
     }
 
-    public void start(){
+    public void run(){
         try{
             process = processBuilder.start();
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -64,7 +64,7 @@ public class HosterClient {
         }
     }
 
-    public void stop() {
+    public void halt() {
         process.destroy();
         processBuilder = null;
     }
