@@ -6,12 +6,25 @@ Example config:
 ```yaml
 servers:
   latest: # Server slug
-    cmd: "java path/to/server.jar -Xmx1024M -Xms1024M -jar -nogui" # Command to run to start the server
+    directory: path/to/server/directory
+    cmd: # Command and arguments to run to start the server
+      - java
+      - -Xmx1024M
+      - -Xms1024M
+      - -jar
+      - server.jar
     type: "minecraft" # Used for handling startup notifications, chat messages, and stop commands (graceful shutdowns)
     shutdowns: # Optional, omit for no auto shutdowns
       grace-minutes: 30
   astral:
-    cmd: "java path/to/other/server.jar -Xmx1024M -Xms1024M -jar -nogui"
+    directory: path/to/other/server/directory
+    cmd: 
+      - java
+      - -Xmx1024M
+      - -Xms1024M
+      - -jar
+      - server.jar
+      - -nogui
     type: "minecraft"
     shutdowns: 
       grace-minutes: 30

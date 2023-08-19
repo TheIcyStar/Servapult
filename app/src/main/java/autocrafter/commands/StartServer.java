@@ -23,8 +23,8 @@ public class StartServer extends ListenerAdapter {
     public StartServer(Guild guild) {
         OptionData serverList = new OptionData(OptionType.STRING, "server", "Which server to set up");
 
-        serverList.addChoice("latest", "minecraft-1.19.4");
-        serverList.addChoice("astral", "create-astral");
+        serverList.addChoice("latest", "latest");
+        serverList.addChoice("astral", "astral");
 
         commandData = Commands.slash(COMMAND_NAME, "Starts a specified server")
             .addOptions(serverList);
@@ -44,8 +44,7 @@ public class StartServer extends ListenerAdapter {
 
             event.reply("Starting server: " + serverName).queue();
             
-            String[] javaArgs = {"-Xmx1024M", "-Xms1024M", "-jar"};
-            client = new HosterClient("Q:\\Servers\\DummyMC\\server.jar", javaArgs);
+            client = new HosterClient(serverName);
             client.start();
         }
     }

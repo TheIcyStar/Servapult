@@ -3,15 +3,61 @@
  */
 package autocrafter;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
+/**
+ * The Autocrafter app. Will determine what type of client it is and run like so.
+ */
 public class App {
+    /**
+     * A simple greeting
+     * 
+     * @return Hello World!
+     */
     public String getGreeting() {
         return "Hello World!";
     }
 
+    /**
+     * Starts the hoster client
+     * 
+     * @param slug Server specifier
+     * @return Host client
+     */
+    private static HosterClient StartHostClient(String slug) {
+        HosterClient hostClient = new HosterClient(slug);
+        hostClient.start();
+        return hostClient;
+    }
+
+    /**
+     * Starts the starter client
+     * 
+     * @return Starter client
+     */
+    private static StarterClient StartStarterClient() {
+        StarterClient starterClient = new StarterClient();
+        starterClient.start();
+        return starterClient;
+    }
+
+    /**
+     * Main method; Runs the program
+     * 
+     * @param args Command line arguments
+     */
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
 
-        StarterClient botClient = new StarterClient();
-        botClient.start();
+        Dotenv dotenv = Dotenv.load();
+        String serviceType = dotenv.get("SERVICE_TYPE");
+        
+        if (serviceType.equals("BOTH")) {
+            StartStarterClient();
+        } else if (serviceType.equals("HOSTER")) {
+            StartHostClient("latest");
+        } else if (serviceType.equals("STARTER")) {
+            StartStarterClient();
+        }
     }
 }

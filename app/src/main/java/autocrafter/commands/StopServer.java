@@ -22,7 +22,11 @@ public class StopServer extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(@Nonnull SlashCommandInteractionEvent event) {
         if (event.getName().equals(COMMAND_NAME)) {
-            autocrafter.commands.StartServer.getHosterClient().stop();
+            event.reply("Stopping server").queue();
+
+            autocrafter.commands.StartServer.getHosterClient().halt();
+
+            event.getHook().sendMessage("Server stopped!").queue();
         }
     }
     
