@@ -1,4 +1,4 @@
-package autocrafter.commands;
+package servapult.commands;
 
 import javax.annotation.Nonnull;
 
@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
-import autocrafter.HosterClient;
+import servapult.HosterClient;
 
 public class StartServer extends ListenerAdapter {
 

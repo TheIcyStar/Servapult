@@ -1,5 +1,6 @@
-# Autocrafter
+# Servapult
 Lets you launch several different Minecraft servers from discord. Also pushes minecraft chats to a discord channel
+⚠️ Currently under development and not intended for general use. 
 
 ## Server configs
 Example config:

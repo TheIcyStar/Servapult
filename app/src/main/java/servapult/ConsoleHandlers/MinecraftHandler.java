@@ -1,6 +1,4 @@
-package autocrafter.ConsoleHandlers;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
+package servapult.ConsoleHandlers;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,9 +7,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import autocrafter.DotenvLoader;
-import autocrafter.Models.ConsoleHandler;
-import io.github.cdimascio.dotenv.Dotenv;
+import servapult.Models.ConsoleHandler;
 
 public class MinecraftHandler extends ConsoleHandler {
     private HttpURLConnection webhookConnection = null;
