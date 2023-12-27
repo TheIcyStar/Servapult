@@ -1,6 +1,8 @@
 package servapult.ConsoleHandlers;
-import java.io.File;
-import java.io.FileWriter;
+// import java.io.File;
+// import java.io.FileWriter;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.DataOutputStream;
@@ -16,10 +18,43 @@ import servapult.Models.ConsoleHandler;
 
 public class MinecraftHandler extends ConsoleHandler {
     private HttpURLConnection webhookConnection = null;
+    enum GameEventType {
+        SERVER_READY,
+        SERVER_CLOSE,
+
+        PLAYER_JOIN,
+        PLAYER_LEAVE,
+        PLAYER_CHAT,
+        PLAYER_ADVANCEMENT, //maybe not necessary?
+        PLAYER_DEATH, //Minecraft death messages are quite complex, implement this someday?
+
+        UNKNOWN
+    }
+
+    public class GameEvent {
+        public GameEventType type;
+        public String username;
+        public String text;
+
+        public GameEvent(GameEventType type, String username, String text){
+            this.type = type;
+            this.username = username;
+            this.text = text;
+        }
+
+        public String getProfilePictureURL(){
+            return "https://i.imgur.com/XYz3c2w.png";
+        }
+    }
 
     public static void main(String[] args) { //testing
         MinecraftHandler handler = new MinecraftHandler();
-        handler.sendDiscordText("");
+        handler.handleLine("[23:40:23] [Server thread/INFO]: Done (13.37s)! For help, type \"help\"");
+        handler.handleLine("[23:41:00] [Server thread/INFO]: TheIcyStar joined the game");
+        handler.handleLine("[23:41:22] [Server thread/INFO]: TheIcyStar has made the advancement [Stone Age]");
+        handler.handleLine("[23:41:48] [Server thread/INFO]: TheIcyStar fell from a high place");
+        handler.handleLine("[23:41:55] [Server thread/INFO]: <TheIcyStar> poggersky");
+        handler.handleLine("[23:41:57] [Server thread/INFO]: TheIcyStar left the game");
     }
 
     public MinecraftHandler(){
@@ -54,24 +89,75 @@ public class MinecraftHandler extends ConsoleHandler {
 
     public void handleLine(String line){
         System.out.println("handled:"+line);
+        GameEvent newEvent = parseLineToGameEvent(line);
+        sendDiscordText(newEvent);
 
-        //todo: fix output to file
-        File file = new File("lastrun.log");
-        try(FileWriter fr = new FileWriter(file, true)){
-            fr.write(line);
+        // File file = new File("lastrun.log");
+        // try(FileWriter fr = new FileWriter(file, true)){
+        //     fr.write(line+"\n");
 
-        } catch(IOException e){
-            System.out.println();
-        }        
+        // } catch(IOException e){
+        //     System.out.println();
+        // }        
     }
 
-    private void sendDiscordText(String line) {
+    public GameEvent parseLineToGameEvent(String line){ //left off: finished parsing, needds to be tested with various lines. Main method in this class should work
+        Pattern searchPattern;
+        Matcher searchMatches;
+
+        //Server Ready
+        searchPattern = Pattern.compile("\\[Server thread/INFO]: Done \\(.*\\)! For help, type \"help\"");
+        searchMatches = searchPattern.matcher(line);
+        if (searchMatches.find()){
+            return new GameEvent(GameEventType.SERVER_READY, null, null);
+        }
+
+        //TODO: Server Close
+        searchPattern = Pattern.compile("I forgot to log the server close");
+        searchMatches = searchPattern.matcher(line);
+        if (searchPattern.matcher(line).find()){
+            return new GameEvent(GameEventType.SERVER_CLOSE, null, null);
+        }
+
+        //Player join
+        searchPattern = Pattern.compile("\\[Server thread/INFO]: ([\\w\\d]*) joined the game");
+        searchMatches = searchPattern.matcher(line);
+        if (searchPattern.matcher(line).find()){
+            String username = searchMatches.group();
+            return new GameEvent(GameEventType.PLAYER_JOIN, username, username + " joined the game");
+        }
+
+        //Player leave
+        searchPattern = Pattern.compile("\\[Server thread/INFO]: ([\\w\\d]*) left the game");
+        searchMatches = searchPattern.matcher(line);
+        if (searchPattern.matcher(line).find()){
+            String username = searchMatches.group();
+            return new GameEvent(GameEventType.PLAYER_LEAVE, username, username + " left the game");
+        }
+
+        //Player chat
+        searchPattern = Pattern.compile("\\[Server thread/INFO]: (<[\\w\\d]*>) (.*)");
+        searchMatches = searchPattern.matcher(line);
+        if (searchPattern.matcher(line).find()){
+            String username = searchMatches.group(1);
+            String chat = searchMatches.group(2);
+            return new GameEvent(GameEventType.PLAYER_CHAT, username, chat);
+        }
+
+
+        
+        return new GameEvent(GameEventType.PLAYER_CHAT, "OnlySixteenChars", "I'm the long lost cousin of OnlyTwentyCharacters");
+    }
+
+    private void sendDiscordText(GameEvent event) {
         if(webhookConnection == null){
             return;
         }
 
-        String payload = String.format("{\"username\": \"%s\", \"avatar_url\": \"https://i.imgur.com/XYz3c2w.png\", \"content\": \"%s\"}\"",
-         "OnlySixteenChars", "I'm the long lost cousin of OnlyTwentyCharacters");
+        //Grab username
+
+        String payload = String.format("{\"username\": \"%s\", \"avatar_url\": \"%s\", \"content\": \"%s\"}\"",
+         event.username, event.getProfilePictureURL(), event.text);
 
         System.out.println(payload);
     
@@ -97,5 +183,6 @@ public class MinecraftHandler extends ConsoleHandler {
         }
 
         System.out.println("STATUS: "+code+" RESPONSE: \n"+response.toString());
+        //TODO: handle 4xx responses, (ratelmiits, invalid webhook urls, etc)
     }
 }
