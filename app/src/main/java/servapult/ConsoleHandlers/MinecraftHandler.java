@@ -3,11 +3,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.DataOutputStream;
+import java.io.BufferedReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import io.github.cdimascio.dotenv.Dotenv;
 
+import servapult.DotenvLoader;
 import servapult.Models.ConsoleHandler;
+
 
 public class MinecraftHandler extends ConsoleHandler {
     private HttpURLConnection webhookConnection = null;
@@ -65,9 +70,8 @@ public class MinecraftHandler extends ConsoleHandler {
             return;
         }
 
-        String payload = String.format("""
-        {"username": "%s", "avatar_url": "https://i.imgur.com/XYz3c2w.png", "content": "%s"}            
-        """, "OnlySixteenChars", "I'm the long lost cousin of OnlyTwentyCharacters");
+        String payload = String.format("{\"username\": \"%s\", \"avatar_url\": \"https://i.imgur.com/XYz3c2w.png\", \"content\": \"%s\"}\"",
+         "OnlySixteenChars", "I'm the long lost cousin of OnlyTwentyCharacters");
 
         System.out.println(payload);
     
