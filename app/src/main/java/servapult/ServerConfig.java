@@ -1,4 +1,4 @@
-package autocrafter;
+package servapult;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import java.io.File;

@@ -1,9 +1,9 @@
-package autocrafter.ConsoleHandlers;
+package servapult.ConsoleHandlers;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import autocrafter.Models.ConsoleHandler;
+import servapult.Models.ConsoleHandler;
 
 public class MinecraftHandler extends ConsoleHandler {
     public void handleLine(String line){
