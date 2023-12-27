@@ -2,7 +2,7 @@
  * Handles external server starting
  */
 
-package autocrafter;
+package servapult;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.naming.NameNotFoundException;
 
-import autocrafter.ConsoleHandlers.MinecraftHandler;
+import servapult.ConsoleHandlers.MinecraftHandler;
 
 public class HosterClient extends Thread {
     public ProcessBuilder processBuilder;

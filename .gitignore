@@ -31,5 +31,5 @@ replay_pid*
 # Ignore Gradle build output directory
 build
 
-# Autocrafter Server configs
+# Servapult Server configs
 serverConfig.yaml

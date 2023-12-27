@@ -1,4 +1,4 @@
-package autocrafter;
+package servapult;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
 import java.util.ArrayList;
 
-import autocrafter.commands.*;
+import servapult.commands.*;
 
 /**
  * Runs the Discord bot which allows for users to start and stop game servers
